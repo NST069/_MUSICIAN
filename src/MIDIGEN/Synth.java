@@ -22,15 +22,15 @@ public class Synth {
     }
     public void close(){synth.close();}
 
-    public void playSound(int channel, int duration, int volume, int... notes){
-        for(int note:notes){
-            channels[channel].noteOn(note, volume);
+    public void playSound(int channel, Note note){
+        for(int n:note.notes){
+            channels[channel].noteOn(n, note.volume);
         }
         try{
-            Thread.sleep(duration);
+            Thread.sleep(note.duration);
         }catch(InterruptedException ex){ex.printStackTrace();}
-        for(int note:notes){
-            channels[channel].noteOff(note);
+        for(int n:note.notes){
+            channels[channel].noteOff(n);
         }
     }
 }
