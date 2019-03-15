@@ -1,5 +1,6 @@
 package MIDIGEN;
 
+import javax.sound.midi.MetaMessage;
 import java.util.ArrayList;
 
 /**
@@ -19,11 +20,14 @@ public class Player {
     public void Play() {
         s = new Synth();
         isPlaying = true;
+        Metronome m = new Metronome();
+        m.start(130);
         for (Chord c : Chords) {
             if(isPlaying==true) {
                 s.playSound(c);
             }
         }
+        m.stop();
         isPlaying = false;
         s.close();
     }
