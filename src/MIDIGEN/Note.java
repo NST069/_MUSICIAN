@@ -1,19 +1,20 @@
 package MIDIGEN;
 
-import java.util.ArrayList;
 
 /**
  * Created by NST069 on 13.03.2019.
  */
 public class Note {
 
+    int channel;
     int duration;
     int volume;
-    ArrayList<Integer> notes;
+    int note;
 
-    public Note(int d, int v, ArrayList<Integer> notes){
+    public Note(int c, int d, int v, int n){
+        this.channel=c;
         this.duration=d;
         this.volume=v;
-        this.notes=notes;
+        this.note=n;
     }
 }

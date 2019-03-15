@@ -9,28 +9,35 @@ import java.util.Random;
 public class Generator {
     static Random r = new Random();
 
-    public static ArrayList<Note> GenerateSound(){
-        ArrayList<Note> l = new ArrayList<>();
+    public static ArrayList<Chord> GenerateSound(){
+        ArrayList<Chord> l = new ArrayList<>();
         int ClipDuration = Math.abs((r.nextInt()%60000)+1);
         int counter=0;
         while(counter<ClipDuration){
-            Note n = makeNote();
+            Chord n = makeChord();
             l.add(n);
-            counter+=n.duration;
+            counter+=n.Duration();
         }
 
         return l;
     }
 
-    static Note makeNote(){
-        ArrayList<Integer> n=new ArrayList<>();
-        int chord = Math.abs((r.nextInt()%3)+1);
-        if(chord==0) {n.add(-1);}
-        else {
-            for (int i = 0; i < chord; i++) {
-                n.add(Math.abs((r.nextInt() % 60) + 46));
-            }
+    static Chord makeChord(){
+        Chord chord = new Chord();
+
+        int notes = Math.abs(r.nextInt(5));
+        for(int i=0;i<notes;i++){
+            chord.Add(makeNote());
         }
-        return new Note(Math.abs(r.nextInt()%1000), Math.abs((r.nextInt()%20)+70), n);
+
+        return chord;
+    }
+
+    static Note makeNote(){
+        int channel = Math.abs(r.nextInt(2));//Use 2 channels for now        //Math.abs(r.nextInt()%16);
+        int duration=Math.abs(r.nextInt()%1000);
+        int volume=Math.abs((r.nextInt()%20)+70);
+        int note=Math.abs((r.nextInt() % 60) + 46);
+        return new Note(channel, duration, volume, note);
     }
 }

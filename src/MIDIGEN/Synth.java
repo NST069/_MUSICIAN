@@ -22,15 +22,26 @@ public class Synth {
     }
     public void close(){synth.close();}
 
-    public void playSound(int channel, Note note){
-        for(int n:note.notes){
-            channels[channel].noteOn(n, note.volume);
-        }
-        try{
-            Thread.sleep(note.duration);
-        }catch(InterruptedException ex){ex.printStackTrace();}
-        for(int n:note.notes){
-            channels[channel].noteOff(n);
+    public void playSound(Chord c){
+        for(int m : c.getChannels()) {
+            for (Note n : c.getNotesOfChannel(m)) {
+                if (n.note != -1) {
+                    channels[m].noteOn(n.note, n.volume);
+                }
+            }
+
+            for (Note n : c.getNotesOfChannel(m)) {
+                try {
+                    Thread.sleep(n.duration);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            for (Note n : c.getNotesOfChannel(m)) {
+                if (n.note != -1) {
+                    channels[m].noteOff(n.note);
+                }
+            }
         }
     }
 }
