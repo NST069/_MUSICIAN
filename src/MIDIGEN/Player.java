@@ -34,4 +34,9 @@ public class Player {
     public void Generate(){
         Chords = Generator.GenerateSound();
     }
+
+    public void save(){
+
+
+    }
 }

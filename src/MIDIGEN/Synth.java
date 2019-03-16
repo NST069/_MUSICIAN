@@ -18,6 +18,7 @@ public class Synth {
             synth = MidiSystem.getSynthesizer();
             synth.open();
             channels=synth.getChannels();
+            initChannels();
         }catch(MidiUnavailableException ex){ex.printStackTrace();}
     }
     public void close(){synth.close();}
@@ -43,5 +44,18 @@ public class Synth {
                 }
             }
         }
+    }
+
+    public void initChannels(){
+        channels[0].programChange(1);       //Acoustic Piano
+        channels[1].programChange(14);      //Xylophone
+        channels[2].programChange(20);      //Church Organ
+        channels[3].programChange(26);      //Steel Guitar
+        channels[4].programChange(33);      //Acoustic Bass
+        channels[5].programChange(41);      //Violin
+        channels[6].programChange(81);      //Square Wave
+        channels[7].programChange(92);      //Space Pad
+        channels[8].programChange(118);     //Melodic Drum
+        //channels[9] drums
     }
 }

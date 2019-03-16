@@ -34,7 +34,7 @@ public class Generator {
     }
 
     static Note makeNote(){
-        int channel = Math.abs(r.nextInt(2));//Use 2 channels for now        //Math.abs(r.nextInt()%16);
+        int channel = Math.abs(r.nextInt(8));               //Math.abs(r.nextInt()%16);
         int duration=Math.abs(r.nextInt()%1000);
         int volume=Math.abs((r.nextInt()%20)+70);
         int note=Math.abs((r.nextInt() % 60) + 46);
