@@ -1,6 +1,7 @@
 package MIDIGEN;
 
 import javax.sound.midi.MetaMessage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -14,10 +15,10 @@ public class Player {
 
     public Player(){
         isPlaying=false;
-        Generate();
+        //Generate();
     }
 
-    public void Play() {
+    public void Play() {/*
         s = new Synth();
         isPlaying = true;
         Metronome m = new Metronome();
@@ -30,13 +31,20 @@ public class Player {
         m.stop();
         isPlaying = false;
         s.close();
+        */
+        s=new Synth(130, 300);
+        //s.Start();
     }
+    /*
     public void Generate(){
         Chords = Generator.GenerateSound();
     }
-
+    */
     public void save(){
-
+        try{
+            s.Record("1.mid");
+            System.out.println("saved");
+        }catch(IOException ex){ex.printStackTrace();}
 
     }
 }

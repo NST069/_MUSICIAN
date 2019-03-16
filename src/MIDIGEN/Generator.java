@@ -1,5 +1,6 @@
 package MIDIGEN;
 
+import javax.sound.midi.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,9 +10,9 @@ import java.util.Random;
 public class Generator {
     static Random r = new Random();
 
-    public static ArrayList<Chord> GenerateSound(){
+    public static ArrayList<Chord> GenerateSound(int ClipDuration){
         ArrayList<Chord> l = new ArrayList<>();
-        int ClipDuration = Math.abs((r.nextInt()%60000)+1);
+        //int ClipDuration = Math.abs((r.nextInt()%60000)+1);
         int counter=0;
         while(counter<ClipDuration){
             Chord n = makeChord();
@@ -33,11 +34,11 @@ public class Generator {
         return chord;
     }
 
-    static Note makeNote(){
+    static Note makeNote() {
         int channel = Math.abs(r.nextInt(8));               //Math.abs(r.nextInt()%16);
-        int duration=Math.abs(r.nextInt()%1000);
-        int volume=Math.abs((r.nextInt()%20)+70);
-        int note=Math.abs((r.nextInt() % 60) + 46);
+        int duration = Math.abs(r.nextInt(100));
+        int volume = Math.abs((r.nextInt() % 20) + 70);
+        int note = Math.abs((r.nextInt() % 60) + 46);
         return new Note(channel, duration, volume, note);
     }
 }

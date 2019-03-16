@@ -8,13 +8,13 @@ public class Note {
 
     int channel;
     int duration;
-    int volume;
-    int note;
+    int velocity;
+    int key;
 
-    public Note(int c, int d, int v, int n){
-        this.channel=c;
-        this.duration=d;
-        this.volume=v;
-        this.note=n;
+    public Note(int channel, int duration, int velocity, int key){
+        this.channel=channel;
+        this.duration=duration;
+        this.velocity=velocity;
+        this.key=key;
     }
 }

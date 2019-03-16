@@ -12,13 +12,10 @@ public class main_test {
         Player p=new Player();
         p.Play();
 
-        /*
         System.out.println("Save? [Y/N] ");
         Scanner s = new Scanner(System.in);
-        if(s.nextLine() == "Y"){
-            File f = new File("out.mid");
+        if(s.nextLine().equals("Y")){
             p.save();
         }
-        */
     }
 }
