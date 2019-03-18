@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/src/MIDIGEN/Player.java" />
+      <file url="file://$PROJECT_DIR$/src/MIDIGEN/main_test.java" />
+    </excludeFromCompile>
+  </component>
+</project>
