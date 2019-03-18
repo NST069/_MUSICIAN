@@ -10,6 +10,7 @@ public class main_test {
 
     public static void main(String[] args){
         Player p=new Player();
+        p.Open();
         p.Play();
 
         System.out.println("Save? [Y/N] ");
@@ -17,5 +18,6 @@ public class main_test {
         if(s.nextLine().equals("Y")){
             p.save();
         }
+        p.close();
     }
 }

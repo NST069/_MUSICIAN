@@ -17,6 +17,9 @@ public class Player {
         isPlaying=false;
         //Generate();
     }
+    public void close(){
+        s.close();
+    }
 
     public void Play() {/*
         s = new Synth();
@@ -32,16 +35,17 @@ public class Player {
         isPlaying = false;
         s.close();
         */
-        s=new Synth(130, 300);
-        //s.Start();
+        s.Start();
     }
-    /*
-    public void Generate(){
-        Chords = Generator.GenerateSound();
+
+    public void Open(){
+        s=new Synth(140, 300);
+        //Chords = Generator.GenerateSound();
     }
-    */
+
     public void save(){
         try{
+
             s.Record("1.mid");
             System.out.println("saved");
         }catch(IOException ex){ex.printStackTrace();}

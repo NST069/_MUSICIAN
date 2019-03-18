@@ -4,6 +4,7 @@ import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by NST069 on 13.03.2019.
@@ -66,6 +67,9 @@ public class Synth {
      * 128 - Note Off
      */
     private Sequencer sequencer;
+    private Transmitter seqTrans;
+    private Synthesizer synth;
+    private Receiver synthRcvr;
     private MidiChannel[] channels;
     private Track track;
 
@@ -86,6 +90,11 @@ public class Synth {
         } catch (MidiUnavailableException | InvalidMidiDataException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void close(){
+        if(sequencer.isOpen()) sequencer.close();
+        if(synth.isOpen()) synth.close();
     }
 
     private MidiEvent makeEvent(int cmd, int channel, int note, int velocity, int tick) {
@@ -142,16 +151,37 @@ public class Synth {
     }
 
     public void Start() {
-        sequencer.start();
-        while(true){
-            if(!sequencer.isRunning()){
-                sequencer.close();
+
+        try {
+            synth = MidiSystem.getSynthesizer();
+            seqTrans = sequencer.getTransmitter();
+            synthRcvr = synth.getReceiver();
+            seqTrans.setReceiver(synthRcvr);
+            synth.open();
+            sequencer.start();
+
+
+            while (true) {
+                System.out.println(sequencer.getMicrosecondPosition());
+                if (!sequencer.isRunning()) {
+                    System.out.println("close");
+                    //sequencer.close();
+                    sequencer.stop();
+                    seqTrans.close();
+                    synthRcvr.close();
+                    synth.close();
+                    return;
+                }
             }
+
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
         }
     }
     public void Record(String to) throws IOException{
         File f = new File(System.getProperty("user.home")+"\\Desktop\\"+to);
         System.out.println(f.getAbsolutePath().toString());
         MidiSystem.write(sequencer.getSequence(),MidiSystem.getMidiFileTypes(sequencer.getSequence())[0], f);
+        return;
     }
 }
