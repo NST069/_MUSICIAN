@@ -23,7 +23,7 @@ public class MainWindow extends JFrame {
     private JPanel _cover;
     private JPanel right;
     private JButton play;
-    private JButton stop;
+    private JButton save;
     private JLabel _title;
     private JButton remake;
 
@@ -49,7 +49,7 @@ public class MainWindow extends JFrame {
         right = new JPanel(new GridLayout(4,1));
         right.add(_title, 0);
         right.add(play, 1);
-        right.add(stop, 2);
+        right.add(save, 2);
         right.add(remake, 3);
         pnl.add(right, 1);
         content.add(pnl);
@@ -68,8 +68,7 @@ public class MainWindow extends JFrame {
             }
         };
         play=new JButton("Play");
-        stop=new JButton("Stop");
-        stop.setEnabled(false);
+        save=new JButton("Save");
         _title=new JLabel("");
         remake=new JButton("Remake");
     }
@@ -85,10 +84,6 @@ public class MainWindow extends JFrame {
         play.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                play.setEnabled(false);
-                stop.setEnabled(true);
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -98,12 +93,10 @@ public class MainWindow extends JFrame {
 
             }
         });
-        stop.addActionListener(new ActionListener(){
+        save.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                play.setEnabled(true);
-                stop.setEnabled(false);
-                player.isPlaying = false;
+                //player.save();
             }
         });
         remake.addActionListener(new ActionListener(){
