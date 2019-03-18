@@ -17,7 +17,7 @@ public class img_show extends JFrame {
     public static void main(String[] args) {
         img_show app = new img_show();
 
-        BufferedImage img = Generator.Generate(500);
+        BufferedImage img = Generator.Generate(500, "test");
         JPanel contentPane = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {

@@ -8,8 +8,8 @@ import java.util.Random;
  */
 public class Generator {
 
-    public static BufferedImage Generate(int dims) {
-        Random rand = new Random();
+    public static BufferedImage Generate(int dims, String seed) {
+        Random rand = new Random(seed);
         BufferedImage img = new BufferedImage(dims, dims, BufferedImage.TYPE_INT_ARGB);
         for (int y = 0; y < dims; y++)
             for (int x = 0; x < dims; x++) {
