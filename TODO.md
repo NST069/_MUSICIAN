@@ -23,11 +23,20 @@ STEP 4
 	IMGGEN: multi-iterational scheme
 	
 STEP 5 
-	Make a GUI for MIDIGEN & IMGGEN
+	Make a pretty looking GUI for MIDIGEN & IMGGEN
 	Write a program generating title using random seed(GUID) 						-TITLEGEN
 	//artist name/label name - first generated string
 	Release alpha version
-	
+
+21 may 2019
+ADDITIONAL TASKS
+	Make WAVEGEN
+	Make Database for notes, instruments and MUSIC THEORY
+	Delete Metronome or make a Beat Generator out of it
+	Make Pause work
+	Add SaveTo
+	//Web GUI
+
 -----v0.1
 	Freshly generated midis need to be listenable in-app
 	Moderation - manual
