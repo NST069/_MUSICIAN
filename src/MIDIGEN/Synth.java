@@ -4,77 +4,22 @@ import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by NST069 on 13.03.2019.
  */
 public class Synth {
-/*
-    private MidiChannel[] channels;
-    private Synthesizer synth;
 
-    public Synth(){
-        try{
-            synth = MidiSystem.getSynthesizer();
-            synth.open();
-            channels=synth.getChannels();
-            initChannels();
-        }catch(MidiUnavailableException ex){ex.printStackTrace();}
-    }
-    public void close(){synth.close();}
-
-    public void playSound(Chord c){
-        for(int m : c.getChannels()) {
-            for (Note n : c.getNotesOfChannel(m)) {
-                if (n.note != -1) {
-                    channels[m].noteOn(n.note, n.volume);
-                }
-            }
-
-            for (Note n : c.getNotesOfChannel(m)) {
-                try {
-                    Thread.sleep(n.duration);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            for (Note n : c.getNotesOfChannel(m)) {
-                if (n.note != -1) {
-                    channels[m].noteOff(n.note);
-                }
-            }
-        }
-    }
-
-    public void initChannels(){
-        channels[0].programChange(1);       //Acoustic Piano
-        channels[1].programChange(14);      //Xylophone
-        channels[2].programChange(20);      //Church Organ
-        channels[3].programChange(26);      //Steel Guitar
-        channels[4].programChange(33);      //Acoustic Bass
-        channels[5].programChange(41);      //Violin
-        channels[6].programChange(81);      //Square Wave
-        channels[7].programChange(92);      //Space Pad
-        channels[8].programChange(118);     //Melodic Drum
-        //channels[9] drums
-    }
-    */
-    /***
-     * MidiEvents:
-     * 192 - change Instrument
-     * 144 - Note On
-     * 128 - Note Off
-     */
     private Sequencer sequencer;
-    private Transmitter seqTrans;
     private Synthesizer synth;
-    private Receiver synthRcvr;
     private MidiChannel[] channels;
     private Track track;
 
+    private boolean paused;
+
     public Synth(int bpm, int duration) {
         try {
+            paused=true;
             sequencer = MidiSystem.getSequencer();
             channels = MidiSystem.getSynthesizer().getChannels();
             sequencer.open();
@@ -150,12 +95,16 @@ public class Synth {
         track.add(new MidiEvent(off, start+n.duration));
     }
 
-    public void Start() {
+    public void Start(boolean restart) {
 
         try {
+            paused=false;
+            if(restart) {
+                sequencer.setTickPosition(0);
+            }
             synth = MidiSystem.getSynthesizer();
-            seqTrans = sequencer.getTransmitter();
-            synthRcvr = synth.getReceiver();
+            Transmitter seqTrans = sequencer.getTransmitter();
+            Receiver synthRcvr = synth.getReceiver();
             seqTrans.setReceiver(synthRcvr);
             synth.open();
             sequencer.start();
@@ -163,9 +112,8 @@ public class Synth {
 
             while (true) {
                 System.out.println(sequencer.getMicrosecondPosition());
-                if (!sequencer.isRunning()) {
+                if (!sequencer.isRunning() || paused) {
                     System.out.println("close");
-                    //sequencer.close();
                     sequencer.stop();
                     seqTrans.close();
                     synthRcvr.close();
@@ -178,9 +126,22 @@ public class Synth {
             e.printStackTrace();
         }
     }
+    public long getPosition(){
+        return sequencer.getTickPosition();
+    }
+    public void setInitialPosition(){ sequencer.setTickPosition(0);}
+    public long getLength(){
+        return sequencer.getTickLength();
+    }
+    public boolean getPausedStatus(){return paused;}
+    public void Pause(){
+        System.out.println("paused");
+        paused=true;
+    }
+
     public void Record(String to) throws IOException{
         File f = new File(System.getProperty("user.home")+"\\Desktop\\"+to);
-        System.out.println(f.getAbsolutePath().toString());
+        System.out.println(f.getAbsolutePath());
         MidiSystem.write(sequencer.getSequence(),MidiSystem.getMidiFileTypes(sequencer.getSequence())[0], f);
         return;
     }

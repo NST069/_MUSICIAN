@@ -11,39 +11,48 @@ public class Player {
 
     Synth s;
     ArrayList<Chord> Chords;
-    public boolean isPlaying;
+    Thread PlayingThread;
 
     public Player(){
-        isPlaying=false;
         //Generate();
     }
-    public void close(){
+    public void Close(){
         s.close();
     }
 
-    public void Play() {/*
-        s = new Synth();
-        isPlaying = true;
-        Metronome m = new Metronome();
-        m.start(130);
-        for (Chord c : Chords) {
-            if(isPlaying==true) {
-                s.playSound(c);
-            }
+    public void Play() throws InterruptedException{
+        PlayingThread = new Thread(()-> s.Start(true));
+        PlayingThread.run();
+    }
+    public void Pause() throws InterruptedException {
+        PlayingThread.interrupt();
+        s.Pause();
+        PlayingThread.join();
+    }
+    public void Resume() throws InterruptedException{
+        if(s.getPosition()<s.getLength()) {
+            PlayingThread = new Thread(()-> s.Start(false));
         }
-        m.stop();
-        isPlaying = false;
-        s.close();
-        */
-        s.Start();
+        else {
+            PlayingThread = new Thread(()-> s.Start(true));
+        }
+        PlayingThread.run();
+    }
+    public void Stop() throws InterruptedException{
+        Pause();
+        s.setInitialPosition();
     }
 
-    public void Open(){
-        s=new Synth(140, 300);
+    public void Open(int bpm, int duration){
+        s=new Synth(bpm, duration);
         //Chords = Generator.GenerateSound();
     }
 
-    public void save(){
+    public boolean isPaused(){
+        return s.getPausedStatus();
+    }
+
+    public void Save(){
         try{
 
             s.Record("1.mid");
