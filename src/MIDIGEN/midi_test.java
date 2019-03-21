@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Created by NST069 on 21.03.2019.
@@ -55,17 +56,13 @@ public class midi_test extends JFrame{
         play_pause.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    if(p.isPaused()){
-                        play_pause.setText("Pause");
-                        p.Resume();
-                    }
-                    else{
-                        play_pause.setText("Play");
-                        p.Pause();
-                    }
-
-                }catch(InterruptedException ex){ex.printStackTrace();}
+                if (p.isPaused()) {
+                    play_pause.setText("Pause");
+                    p.Resume();
+                } else {
+                    play_pause.setText("Play");
+                    p.Pause();
+                }
             }
         });
         stop.addActionListener(new ActionListener() {
@@ -79,8 +76,9 @@ public class midi_test extends JFrame{
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: Save to
-                p.Save();
+
+                File f = new File(System.getProperty("user.home")+"\\Desktop\\"+"1.mid");
+                p.Save(f);
             }
         });
         generate.addActionListener(new ActionListener() {

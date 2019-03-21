@@ -2,16 +2,16 @@ package MIDIGEN;
 
 import javax.sound.midi.MetaMessage;
 import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
  * Created by NST069 on 13.03.2019.
  */
-public class Player {
+public class Player{
 
     Synth s;
     ArrayList<Chord> Chords;
-    Thread PlayingThread;
 
     public Player(){
         //Generate();
@@ -20,23 +20,19 @@ public class Player {
         s.close();
     }
 
-    public void Play() throws InterruptedException{
-        PlayingThread = new Thread(()-> s.Start(true));
-        PlayingThread.run();
+    public void Play(){
+        s.Start(true);
     }
-    public void Pause() throws InterruptedException {
-        PlayingThread.interrupt();
+    public void Pause(){
         s.Pause();
-        PlayingThread.join();
     }
-    public void Resume() throws InterruptedException{
+    public void Resume(){
         if(s.getPosition()<s.getLength()) {
-            PlayingThread = new Thread(()-> s.Start(false));
+            s.Start(false);
         }
         else {
-            PlayingThread = new Thread(()-> s.Start(true));
+            s.Start(true);
         }
-        PlayingThread.run();
     }
     public void Stop() throws InterruptedException{
         Pause();
@@ -52,10 +48,10 @@ public class Player {
         return s.getPausedStatus();
     }
 
-    public void Save(){
+    public void Save(File f){
         try{
 
-            s.Record("1.mid");
+            s.Record(f);
             System.out.println("saved");
         }catch(IOException ex){ex.printStackTrace();}
 

@@ -8,18 +8,22 @@ import java.util.ArrayList;
 /**
  * Created by NST069 on 13.03.2019.
  */
-public class Synth {
+public class Synth  implements Runnable {
 
     private Sequencer sequencer;
+    private Transmitter seqTrans;
     private Synthesizer synth;
+    private Receiver synthRcvr;
     private MidiChannel[] channels;
     private Track track;
+
+    private Thread PlayingThread;
 
     private boolean paused;
 
     public Synth(int bpm, int duration) {
         try {
-            paused=true;
+            paused = true;
             sequencer = MidiSystem.getSequencer();
             channels = MidiSystem.getSynthesizer().getChannels();
             sequencer.open();
@@ -32,14 +36,16 @@ public class Synth {
             sequencer.setSequence(seq);
             sequencer.setTempoInBPM(bpm);
 
+            PlayingThread = new Thread(this, "Playing MIDI Sequence");
+
         } catch (MidiUnavailableException | InvalidMidiDataException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void close(){
-        if(sequencer.isOpen()) sequencer.close();
-        if(synth.isOpen()) synth.close();
+    public void close() {
+        if (sequencer.isOpen()) sequencer.close();
+        if (synth.isOpen()) synth.close();
     }
 
     private MidiEvent makeEvent(int cmd, int channel, int note, int velocity, int tick) {
@@ -74,42 +80,78 @@ public class Synth {
             int t = 0;
             for (Chord x : data) {
                 for (int m : x.getChannels()) {
-                    int max=0;
+                    int max = 0;
                     for (Note n : x.getNotesOfChannel(m)) {
                         addNote(track, n, t);
-                        max=(max<n.duration)?n.duration:max;
+                        max = (max < n.duration) ? n.duration : max;
                     }
-                    t+=max;
+                    t += max;
                 }
             }
-        }catch(InvalidMidiDataException | InterruptedException ex){ex.printStackTrace();}
+        } catch (InvalidMidiDataException | InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    private void addNote(Track track, Note n,int start) throws InvalidMidiDataException, InterruptedException{
+    private void addNote(Track track, Note n, int start) throws InvalidMidiDataException, InterruptedException {
         ShortMessage on = new ShortMessage();
-        on.setMessage(ShortMessage.NOTE_ON, n.channel,n.key,n.velocity);
+        on.setMessage(ShortMessage.NOTE_ON, n.channel, n.key, n.velocity);
         ShortMessage off = new ShortMessage();
-        off.setMessage(ShortMessage.NOTE_OFF, n.channel,n.key,n.velocity);
+        off.setMessage(ShortMessage.NOTE_OFF, n.channel, n.key, n.velocity);
 
         track.add(new MidiEvent(on, start));
-        track.add(new MidiEvent(off, start+n.duration));
+        track.add(new MidiEvent(off, start + n.duration));
     }
 
     public void Start(boolean restart) {
+        PlayingThread = new Thread(this, "Playing MIDI Sequence");
+        paused = false;
+        if (restart) {
+            sequencer.setTickPosition(0);
+        }
+        PlayingThread.start();
+    }
 
+    public long getPosition() {
+        return sequencer.getTickPosition();
+    }
+
+    public void setInitialPosition() {
+        sequencer.setTickPosition(0);
+    }
+
+    public long getLength() {
+        return sequencer.getTickLength();
+    }
+
+    public boolean getPausedStatus() {
+        return paused;
+    }
+
+    public void Pause(){
         try {
-            paused=false;
-            if(restart) {
-                sequencer.setTickPosition(0);
-            }
+            System.out.println("paused");
+            paused = true;
+            //sequencer.stop();
+            PlayingThread.join();
+        }catch(InterruptedException ex){ex.printStackTrace();}
+    }
+
+    public void Record(File f) throws IOException {
+        System.out.println(f.getAbsolutePath());
+        MidiSystem.write(sequencer.getSequence(), MidiSystem.getMidiFileTypes(sequencer.getSequence())[0], f);
+        return;
+    }
+
+    @Override
+    public void run() {
+        try {
             synth = MidiSystem.getSynthesizer();
-            Transmitter seqTrans = sequencer.getTransmitter();
-            Receiver synthRcvr = synth.getReceiver();
+            seqTrans = sequencer.getTransmitter();
+            synthRcvr = synth.getReceiver();
             seqTrans.setReceiver(synthRcvr);
             synth.open();
             sequencer.start();
-
-
             while (true) {
                 System.out.println(sequencer.getMicrosecondPosition());
                 if (!sequencer.isRunning() || paused) {
@@ -121,28 +163,8 @@ public class Synth {
                     return;
                 }
             }
-
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
-    }
-    public long getPosition(){
-        return sequencer.getTickPosition();
-    }
-    public void setInitialPosition(){ sequencer.setTickPosition(0);}
-    public long getLength(){
-        return sequencer.getTickLength();
-    }
-    public boolean getPausedStatus(){return paused;}
-    public void Pause(){
-        System.out.println("paused");
-        paused=true;
-    }
-
-    public void Record(String to) throws IOException{
-        File f = new File(System.getProperty("user.home")+"\\Desktop\\"+to);
-        System.out.println(f.getAbsolutePath());
-        MidiSystem.write(sequencer.getSequence(),MidiSystem.getMidiFileTypes(sequencer.getSequence())[0], f);
-        return;
     }
 }
