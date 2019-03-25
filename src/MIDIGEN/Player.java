@@ -14,7 +14,6 @@ public class Player{
     ArrayList<Chord> Chords;
 
     public Player(){
-        //Generate();
     }
     public void Close(){
         s.close();
@@ -47,6 +46,7 @@ public class Player{
     public boolean isPaused(){
         return s.getPausedStatus();
     }
+    public boolean isOpened(){ return s.getOpenedStatus();}
 
     public void Save(File f){
         try{
@@ -55,8 +55,5 @@ public class Player{
             System.out.println("saved");
         }catch(IOException ex){ex.printStackTrace();}
 
-    }
-    public void Generate(){
-        notes = Generator.GenerateSound();
     }
 }

@@ -44,8 +44,8 @@ public class Synth  implements Runnable {
     }
 
     public void close() {
-        if (sequencer.isOpen()) sequencer.close();
-        if (synth.isOpen()) synth.close();
+        if (sequencer!=null && sequencer.isOpen()) sequencer.close();
+        if (synth!=null && synth.isOpen()) synth.close();
     }
 
     private MidiEvent makeEvent(int cmd, int channel, int note, int velocity, int tick) {
@@ -127,6 +127,8 @@ public class Synth  implements Runnable {
     public boolean getPausedStatus() {
         return paused;
     }
+
+    public boolean getOpenedStatus(){ return sequencer.isOpen() || synth.isOpen(); }
 
     public void Pause(){
         try {

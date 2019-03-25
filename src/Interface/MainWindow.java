@@ -4,11 +4,14 @@ import MIDIGEN.Player;
 import jdk.nashorn.internal.runtime.Debug;
 import sun.rmi.runtime.Log;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by NST069 on 13.03.2019.
@@ -38,6 +41,7 @@ public class MainWindow extends JFrame {
 
         player=new MIDIGEN.Player();
         image=IMGGEN.Generator.Generate(500,"");
+        player.Open(140, 300);
 
         initComps();
 
@@ -84,25 +88,35 @@ public class MainWindow extends JFrame {
         play.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        player.Play();
-                    }
-                }).run();
+                if (player.isPaused()) {
+                    play.setText("Pause");
+                    player.Resume();
+                } else {
+                    play.setText("Play");
+                    player.Pause();
+                }
 
             }
         });
         save.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                //player.save();
+                new File(System.getProperty("user.home")+"\\Desktop\\mus\\").mkdir();
+                File p = new File(System.getProperty("user.home")+"\\Desktop\\mus\\"+"1.png");
+                File f = new File(System.getProperty("user.home")+"\\Desktop\\mus\\"+"1.mid");
+                player.Save(f);
+                try {
+                    ImageIO.write(image,"png",p);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         remake.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-                player.Generate();
+                if(player.isOpened()) player.Close();
+                player.Open(140, 300);
                 image=IMGGEN.Generator.Generate(500,"");
                 _cover.repaint();
             }
