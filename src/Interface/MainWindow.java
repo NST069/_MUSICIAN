@@ -1,5 +1,6 @@
 package Interface;
 
+import EZWEBMER.FFMPEG.Jffmpeg;
 import MIDIGEN.Player;
 import jdk.nashorn.internal.runtime.Debug;
 import sun.rmi.runtime.Log;
@@ -110,6 +111,7 @@ public class MainWindow extends JFrame {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+                mp4(p,f);
             }
         });
         remake.addActionListener(new ActionListener(){
@@ -121,5 +123,10 @@ public class MainWindow extends JFrame {
                 _cover.repaint();
             }
         });
+    }
+    public void mp4(File p, File f){
+        EZWEBMER.FFMPEG.Jffmpeg m = new EZWEBMER.FFMPEG.Jffmpeg();
+        m.MakeMp4(p,f,"test");
+        System.out.println(f.getParent());
     }
 }
