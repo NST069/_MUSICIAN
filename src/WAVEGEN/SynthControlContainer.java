@@ -11,8 +11,10 @@ public class SynthControlContainer extends JPanel {
     protected boolean on;
     public boolean isOn(){return on;}
     public void setOn(boolean value){on=value;}
-    protected Point mouseClickLocation;
+    private Point mouseClickLocation;
 
+    public Point getMouseClickLocation(){return mouseClickLocation;}
+    public void setMouseClickLocation(Point value){mouseClickLocation=value;}
 
     public SynthControlContainer(Synth s){
         this.synth = s;

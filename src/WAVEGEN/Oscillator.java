@@ -20,9 +20,9 @@ public class Oscillator extends SynthControlContainer {
         keyFrequency = value;
         ApplyToneOffset();
     }
-    private int toneOffset;
+    private RefWrapper<Integer> toneOffset = new RefWrapper<>(0);
     private double getToneOffset(){
-        return toneOffset/1000d;
+        return toneOffset.val/1000d;
     }
 
     private Wavetable wavetable = Wavetable.Sine;
@@ -44,37 +44,12 @@ public class Oscillator extends SynthControlContainer {
         JLabel toneParameter = new JLabel("x0.00");
         toneParameter.setBounds(165,65,50,25);
         toneParameter.setBorder(Util.WndDesigner.LINE_BORDER);
-        toneParameter.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                final Cursor BLANK_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(
-                        new BufferedImage(16,16, BufferedImage.TYPE_INT_ARGB), new Point(0,0),"blankCursor");
-                setCursor(BLANK_CURSOR);
-                mouseClickLocation = e.getLocationOnScreen();
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                setCursor(Cursor.getDefaultCursor());
-            }
-        });
-        toneParameter.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if(mouseClickLocation.y!=e.getYOnScreen()){
-                    boolean mouseMovingUp = mouseClickLocation.y - e.getYOnScreen() > 0;
-                    if(mouseMovingUp && toneOffset<TONE_OFFSET_LIMIT){
-                        ++toneOffset;
-                    }
-                    else if(!mouseMovingUp && toneOffset>-TONE_OFFSET_LIMIT){
-                        --toneOffset;
-                    }
+        Util.ParameterHandling.AddParameterMouseListeners(toneParameter, this,
+                -TONE_OFFSET_LIMIT, TONE_OFFSET_LIMIT, 1, toneOffset,
+                ()->{
                     ApplyToneOffset();
-                    toneParameter.setText("x" + String.format("%.3f",getToneOffset()));
-                }
-                Util.ParameterHandling.PARAMETER_ROBOT.mouseMove(mouseClickLocation.x,mouseClickLocation.y);
-            }
-        });
+                    toneParameter.setText("x"+String.format("%.3f", getToneOffset()));
+                });
         add(toneParameter);
 
         JLabel toneText=new JLabel("Tone: ");
