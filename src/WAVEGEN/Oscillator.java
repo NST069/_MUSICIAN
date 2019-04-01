@@ -24,6 +24,10 @@ public class Oscillator extends SynthControlContainer {
     private double getToneOffset(){
         return toneOffset.val/1000d;
     }
+    private RefWrapper<Integer> volume = new RefWrapper<>(100);
+    private double getVolumeMultiplier(){
+        return volume.val/100d;
+    }
 
     private Wavetable wavetable = Wavetable.Sine;
     private int wavetableStepSize;
@@ -56,13 +60,26 @@ public class Oscillator extends SynthControlContainer {
         toneText.setBounds(172,40,75,25);
         add(toneText);
 
+        JLabel volumeParameter = new JLabel(" 100%");
+        volumeParameter.setBounds(222,65,50,25);
+        volumeParameter.setBorder(Util.WndDesigner.LINE_BORDER);
+        Util.ParameterHandling.AddParameterMouseListeners(volumeParameter, this, 0, 100, 1,
+                volume, ()->{
+                    volumeParameter.setText(" "+volume.val+"%");
+                });
+        add(volumeParameter);
+
+        JLabel volumeText=new JLabel("Volume: ");
+        volumeText.setBounds( 225,40, 75,25);
+        add(volumeText);
+
         setSize(280, 100);
         setBorder(Util.WndDesigner.LINE_BORDER);
         setLayout(null);
     }
 
     public double nextSample(){
-        double sample = wavetable.getSamples()[wavetableIndex];
+        double sample = wavetable.getSamples()[wavetableIndex]*getVolumeMultiplier();
         wavetableIndex = (wavetableIndex + wavetableStepSize) % Wavetable.SIZE;
         return sample;
     }
