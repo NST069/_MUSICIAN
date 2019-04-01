@@ -26,6 +26,7 @@ public class WaveViewer extends JPanel {
 
         int numSamples = getWidth() - PAD*2;
         double[] mixedSamples = new double[numSamples];
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for(Oscillator o : oscs){
             double[]samples = o.getSampleWaveform(numSamples);
             for(int i=0;i<samples.length;++i){

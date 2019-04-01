@@ -32,7 +32,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Synth.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Synth.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/WAVEGEN/Synth.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="141">
@@ -46,11 +46,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WaveViewer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="WaveViewer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/WAVEGEN/WaveViewer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="43" column="87" lean-forward="true" selection-start-line="43" selection-start-column="87" selection-end-line="43" selection-end-column="87" />
+            <state relative-caret-position="90">
+              <caret line="28" column="8" lean-forward="false" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -208,9 +208,9 @@
         <option value="$PROJECT_DIR$/src/WAVEGEN/RefWrapper.java" />
         <option value="$PROJECT_DIR$/src/WAVEGEN/SynthControlContainer.java" />
         <option value="$PROJECT_DIR$/src/WAVEGEN/util/Util.java" />
-        <option value="$PROJECT_DIR$/src/WAVEGEN/WaveViewer.java" />
         <option value="$PROJECT_DIR$/src/WAVEGEN/Oscillator.java" />
         <option value="$PROJECT_DIR$/src/WAVEGEN/Synth.java" />
+        <option value="$PROJECT_DIR$/src/WAVEGEN/WaveViewer.java" />
       </list>
     </option>
   </component>
@@ -1154,16 +1154,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WAVEGEN/WaveViewer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="43" column="87" lean-forward="true" selection-start-line="43" selection-start-column="87" selection-end-line="43" selection-end-column="87" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/WAVEGEN/Oscillator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1428">
@@ -1186,6 +1176,16 @@
             <element signature="imports" expanded="true" />
             <element signature="e#3327#3328#0" expanded="true" />
             <element signature="e#3363#3364#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/WAVEGEN/WaveViewer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="28" column="8" lean-forward="false" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
