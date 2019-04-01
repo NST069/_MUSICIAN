@@ -18,6 +18,7 @@ public class Synth {
     private static final HashMap<Character, Double> KEY_FREQS = new HashMap<>();
 
     private final Oscillator[] oscs = new Oscillator[3];
+    private final WaveViewer waveViewer= new WaveViewer(oscs);
 
     private boolean shouldgenerate;
     private final AudioThread thread = new AudioThread(() -> {
@@ -47,7 +48,7 @@ public class Synth {
     }
 
     Synth() {
-        frame.setMinimumSize(new Dimension(500, 540));
+        frame.setMinimumSize(new Dimension(923, 345));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLayout(null);
@@ -62,7 +63,16 @@ public class Synth {
             frame.add(oscs[i]);
             y += 105;
         }
-        initListeners(frame);
+        waveViewer.setBounds(290,0,620,310);
+        frame.add(waveViewer);
+
+        frame.addKeyListener(keyAdapter);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                thread.close();
+            }
+        });
         frame.repaint();
     }
 
@@ -73,17 +83,6 @@ public class Synth {
         for(int i = STARTING_KEY, key=0;i<KEYS.length * KEYFREQ_INCREMENT + STARTING_KEY; i+=KEYFREQ_INCREMENT, ++key){
             KEY_FREQS.put(KEYS[key], Util.Math.getKeyFrequency(i));
         }
-    }
-
-    private void initListeners(JFrame f) {
-        f.addKeyListener(keyAdapter);
-        f.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                thread.close();
-            }
-        });
-        //
     }
 
     private final KeyAdapter keyAdapter = new KeyAdapter() {
@@ -107,5 +106,9 @@ public class Synth {
 
     public KeyAdapter getKeyAdapter() {
         return keyAdapter;
+    }
+
+    public void updateWaveViewer(){
+        waveViewer.repaint();
     }
 }

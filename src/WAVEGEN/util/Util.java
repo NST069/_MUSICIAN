@@ -34,8 +34,13 @@ public class Util {
         public static double getKeyFrequency(int keyNum){
             return pow(root(2,12), keyNum-49) * 440;
         }
+
         public static double root(double number, double root){
             return pow(E, log(number)/root);
+        }
+
+        public static double offsetTone(double baseFrequency, double frequencyMultiplier){
+            return baseFrequency * pow(2, frequencyMultiplier);
         }
     }
 
