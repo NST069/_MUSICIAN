@@ -89,6 +89,7 @@ public class Synth {
     private final KeyAdapter keyAdapter = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
+            if(!KEY_FREQS.containsKey(e.getKeyChar())){return;}
             if (!thread.isRunning()) {
                 for(Oscillator o : oscs){
                     o.setKeyFrequency(KEY_FREQS.get(e.getKeyChar()));
