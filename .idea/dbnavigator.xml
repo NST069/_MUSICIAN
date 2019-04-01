@@ -25,7 +25,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="37c02b06-4bff-4fce-913b-5dea4b43374f">
-        <schema name="wavegen_db" object-types="function, view, procedure, table, column, dataset trigger, argument, index, constraint" />
+        <schema name="wavegen_db" object-types="view, column, constraint, index, function, procedure, dataset trigger, table" />
       </connection>
     </loaded-nodes>
   </component>
@@ -526,7 +526,7 @@
         <lookup-ddl-files value="true" />
         <create-ddl-files value="false" />
         <synchronize-ddl-files value="true" />
-        <use-qualified-names value="false" />
+        <use-qualified-names value="true" />
         <make-scripts-rerunnable value="true" />
       </general>
     </ddl-file-settings>

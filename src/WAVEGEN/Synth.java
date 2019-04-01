@@ -1,16 +1,21 @@
 package WAVEGEN;
 
+import WAVEGEN.util.Util;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 
 /**
  * Created by NST069 on 26.03.2019.
  */
 public class Synth {
+
+    private static final HashMap<Character, Double> KEY_FREQS = new HashMap<>();
 
     private final Oscillator[] oscs = new Oscillator[3];
 
@@ -49,6 +54,7 @@ public class Synth {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+
         int y = 0;
         for (int i = 0; i < oscs.length; i++) {
             oscs[i] = new Oscillator(this);
@@ -58,6 +64,15 @@ public class Synth {
         }
         initListeners(frame);
         frame.repaint();
+    }
+
+    static{
+        final int STARTING_KEY = 16;
+        final int KEYFREQ_INCREMENT=2;
+        final char[] KEYS = "zxcvbnm,./asdfghjkl;'qwertyuiop[]".toCharArray();
+        for(int i = STARTING_KEY, key=0;i<KEYS.length * KEYFREQ_INCREMENT + STARTING_KEY; i+=KEYFREQ_INCREMENT, ++key){
+            KEY_FREQS.put(KEYS[key], Util.Math.getKeyFrequency(i));
+        }
     }
 
     private void initListeners(JFrame f) {
@@ -75,6 +90,9 @@ public class Synth {
         @Override
         public void keyPressed(KeyEvent e) {
             if (!thread.isRunning()) {
+                for(Oscillator o : oscs){
+                    o.setKeyFrequency(KEY_FREQS.get(e.getKeyChar()));
+                }
                 shouldgenerate = true;
                 thread.triggerPlayback();
             }
