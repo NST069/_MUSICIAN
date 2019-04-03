@@ -29,11 +29,10 @@ public class Jffmpeg {
 
             Process process = Runtime.getRuntime().exec("cmd /c \"start cmd /k " +
                     ".\\out\\production\\_MUSICIAN\\EZWEBMER\\FFMPEG\\ffmpeg -loop 1 -r 1 "+
-                    " -i "+ img.getAbsolutePath()+
-                    " -i "+music.getParent()+"\\1.wav "+
-                    //" -i "+ music.getAbsolutePath()+
-                    " -b:v 0 -crf 2 -b:a 160k -shortest -g 9999 -pix_fmt yuv420p -speed 0 -deadline 0 -threads 4 "+
-                    music.getParent()+"\\"+name + ".mp4\"");
+                    " -i \""+ img.getAbsolutePath()+
+                    "\" -i \""+music.getAbsolutePath()+
+                    "\" -b:v 0 -crf 2 -b:a 160k -shortest -g 9999 -pix_fmt yuv420p -speed 0 -deadline 0 -threads 4 \""+
+                    music.getParent()+"\\"+name + ".mp4\"\"");
             System.out.println("Started Baking MP4");
             //Process process = Runtime.getRuntime().exec("cmd /K Start");
             process.waitFor();
