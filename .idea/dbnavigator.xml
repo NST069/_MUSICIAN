@@ -25,7 +25,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="37c02b06-4bff-4fce-913b-5dea4b43374f">
-        <schema name="wavegen_db" object-types="view, column, constraint, index, function, procedure, dataset trigger, table" />
+        <schema name="wavegen_db" object-types="function, view, table, procedure, dataset trigger" />
       </connection>
     </loaded-nodes>
   </component>

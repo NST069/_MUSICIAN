@@ -3,16 +3,22 @@ package WAVEGEN;
 import WAVEGEN.util.Util;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by NST069 on 28.03.2019.
  */
 public class Oscillator extends SynthControlContainer {
+
+    @Override
+    public String toString(){
+        String s ="";
+        s+=wavetable.toString()+":"+getToneOffset()+" "+volume.val+"%";
+        return s;
+    }
+
     private static final int TONE_OFFSET_LIMIT=2000;
 
     private double keyFrequency;
@@ -46,6 +52,11 @@ public class Oscillator extends SynthControlContainer {
         });
         add(cb);
 
+        /*
+        TODO: Phase Offset, Detune, Panning, split toneOffset to Coarse pitch & Fine pitch, change Volume to Mix(remove from first?)
+        TODO: Invert Osc, Noise, OpenSoundFile, Phase Randomness(?), Osc3 to Amplitude Modulation(?)
+        TODO: Knobs
+        */
         JLabel toneParameter = new JLabel("x0.00");
         toneParameter.setBounds(165,65,50,25);
         toneParameter.setBorder(Util.WndDesigner.LINE_BORDER);
@@ -62,19 +73,17 @@ public class Oscillator extends SynthControlContainer {
         toneText.setBounds(172,40,75,25);
         add(toneText);
 
-        JLabel volumeParameter = new JLabel(" 100%");
-        volumeParameter.setBounds(222,65,50,25);
-        volumeParameter.setBorder(Util.WndDesigner.LINE_BORDER);
-        Util.ParameterHandling.AddParameterMouseListeners(volumeParameter, this, 0, 100, 1,
-                volume, ()->{
-                    volumeParameter.setText(" "+volume.val+"%");
-                    synth.updateWaveViewer();
-                });
-        add(volumeParameter);
-
-        JLabel volumeText=new JLabel("Volume: ");
-        volumeText.setBounds( 225,40, 75,25);
-        add(volumeText);
+        JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0,100,100);
+        volumeSlider.setBounds(250, 5,25,90);
+        volumeSlider.setBorder(Util.WndDesigner.LINE_BORDER);
+        volumeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                volume.val = ((JSlider)e.getSource()).getValue();
+                synth.updateWaveViewer();
+            }
+        });
+        add(volumeSlider);
 
         setSize(280, 100);
         setBorder(Util.WndDesigner.LINE_BORDER);

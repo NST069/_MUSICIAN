@@ -15,6 +15,17 @@ import java.util.HashMap;
  */
 public class Synth {
 
+    @Override
+    public String toString(){
+        String s ="";
+        for(Oscillator o: oscs){
+            if(o!=null){
+                s+=o.toString()+", ";
+            }
+        }
+        return s;
+    }
+
     private static final HashMap<Character, Double> KEY_FREQS = new HashMap<>();
 
     private final Oscillator[] oscs = new Oscillator[3];
@@ -49,11 +60,10 @@ public class Synth {
 
     Synth() {
         frame.setMinimumSize(new Dimension(923, 345));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLayout(null);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
 
 
         int y = 0;
@@ -74,6 +84,10 @@ public class Synth {
             }
         });
         frame.repaint();
+    }
+
+    public void show(){
+        frame.setVisible(true);
     }
 
     static{
