@@ -26,7 +26,38 @@ public class Oscillator extends SynthControlContainer {
         keyFrequency = value;
         ApplyToneOffset();
     }
+
+    private class Tone{
+        int coarse;
+        public void setCoarse(int value){
+            coarse = value % 1000;
+            updateToneOffset();
+        }
+        int fine;
+        public void setFine(int value){
+            fine = value / 1000;
+            updateToneOffset();
+        }
+
+        public Tone(){
+            coarse=0;
+            fine=0;
+        }
+
+        public int getTone(){
+            return coarse+fine;
+        }
+    }
+
+    Tone tone = new Tone();
     private RefWrapper<Integer> toneOffset = new RefWrapper<>(0);
+    private void setToneOffset(int value){
+        tone.setCoarse(value);
+        tone.setFine(value);
+    }
+    private void updateToneOffset(){
+        toneOffset.val=tone.getTone();
+    }
     private double getToneOffset(){
         return toneOffset.val/1000d;
     }
@@ -68,20 +99,73 @@ public class Oscillator extends SynthControlContainer {
                     synth.updateWaveViewer();
                 });
         add(toneParameter);
-        */
+
         JKnob jTP = new JKnob();
         jTP.setBounds(170,50,40,40);
         jTP.setStopper(5*Math.PI/6);
+        Util.ParameterHandling.AddKnobMouseListeners(jTP, this,
+                -TONE_OFFSET_LIMIT, TONE_OFFSET_LIMIT, 1, toneOffset,
+                ()->{
+                    ApplyToneOffset();
+                    synth.updateWaveViewer();
+                });
+
         add(jTP);
+        */
+        JSlider CoarsePitchSlider = new JSlider(JSlider.HORIZONTAL);
+        CoarsePitchSlider.setMaximum(TONE_OFFSET_LIMIT);
+        CoarsePitchSlider.setMinimum(-TONE_OFFSET_LIMIT);
+        CoarsePitchSlider.setBounds(5, 70, 180, 25);
+        CoarsePitchSlider.setMajorTickSpacing(1000);
+        CoarsePitchSlider.setMinorTickSpacing(100);
+        CoarsePitchSlider.setPaintTicks(true);
+        CoarsePitchSlider.setSnapToTicks(true);
+        CoarsePitchSlider.setName("Coarse Pitch");
+        CoarsePitchSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                //tone.setCoarse(((JSlider)e.getSource()).getValue());
+                toneOffset.val=((JSlider)e.getSource()).getValue();
+                ApplyToneOffset();
+                synth.updateWaveViewer();
+            }
+        });
+        add(CoarsePitchSlider);
 
+        JLabel coarsePitchText=new JLabel(CoarsePitchSlider.getName());
+        coarsePitchText.setBounds(50,40,75,25);
+        add(coarsePitchText);
 
-        JLabel toneText=new JLabel("Tone: ");
-        toneText.setBounds(172,40,75,25);
-        add(toneText);
+        /*
+        JSlider FinePitchSlider = new JSlider(JSlider.HORIZONTAL);
+        FinePitchSlider.setMaximum(100);
+        FinePitchSlider.setMinimum(-100);
+        FinePitchSlider.setBounds(185, 70, 70, 25);
+        FinePitchSlider.setMajorTickSpacing(10);
+        FinePitchSlider.setMinorTickSpacing(5);
+        FinePitchSlider.setPaintTicks(true);
+        FinePitchSlider.setSnapToTicks(true);
+        FinePitchSlider.setName("Fine Pitch");
+        FinePitchSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                tone.setFine(((JSlider)e.getSource()).getValue());
+                ApplyToneOffset();
+                synth.updateWaveViewer();
+            }
+        });
+        add(FinePitchSlider);
 
+        JLabel finePitchText=new JLabel(FinePitchSlider.getName());
+        finePitchText.setBounds(185,40,75,25);
+        add(finePitchText);
+        */
         JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0,100,100);
         volumeSlider.setBounds(250, 5,25,90);
         volumeSlider.setBorder(Util.WndDesigner.LINE_BORDER);
+        volumeSlider.setMajorTickSpacing(50);
+        volumeSlider.setMinorTickSpacing(10);
+        volumeSlider.setPaintTicks(true);
         volumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -124,6 +208,7 @@ public class Oscillator extends SynthControlContainer {
     public void Update(Oscillator o){
         setKeyFrequency(o.keyFrequency);
         toneOffset = o.toneOffset;
+        setToneOffset(o.toneOffset.val);
         volume=o.volume;
         wavetable=o.wavetable;
     }

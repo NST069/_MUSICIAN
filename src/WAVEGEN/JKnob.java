@@ -1,5 +1,4 @@
 package WAVEGEN;// Imports for the GUI classes.
-import WAVEGEN.util.Util;
 
 import java.awt.*;
 import javax.swing.*;
@@ -16,20 +15,24 @@ import java.awt.event.*;
  * @version 12/4/2000
  */
 
-class JKnob
+public class JKnob
         extends JComponent
         implements MouseListener, MouseMotionListener {
 
     private static final int radius = 20;
+    public int getRadius(){return radius;}
     private static final int spotRadius = 10;
 
     private double theta;
+    public double getTheta(){return theta;}
+    public void setTheta(double value){theta=value;}
     private Color knobColor;
     private Color spotColor;
 
     private boolean pressedOnSpot;
+    public boolean getPressedOnSpot(){return pressedOnSpot;}
 
-    private class Bounds{
+    public class Bounds{
         public double leftBound;
         public double rightBound;
 
@@ -40,6 +43,7 @@ class JKnob
     }
 
     private Bounds bounds;
+    public Bounds getknobBounds(){return bounds;}
 
     /**
      * No-Arg constructor that initializes the position
