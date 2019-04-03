@@ -29,6 +29,7 @@ public class wave_test extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((Synth)cb_synths.getSelectedItem()).show();
+                synths.get(2).UpdateParameters(synths.get(0).getOscs());
             }
         });
         setMinimumSize(new Dimension(615, 100));

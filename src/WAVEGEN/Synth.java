@@ -16,11 +16,11 @@ import java.util.HashMap;
 public class Synth {
 
     @Override
-    public String toString(){
-        String s ="";
-        for(Oscillator o: oscs){
-            if(o!=null){
-                s+=o.toString()+", ";
+    public String toString() {
+        String s = "";
+        for (Oscillator o : oscs) {
+            if (o != null) {
+                s += o.toString() + ", ";
             }
         }
         return s;
@@ -29,7 +29,7 @@ public class Synth {
     private static final HashMap<Character, Double> KEY_FREQS = new HashMap<>();
 
     private final Oscillator[] oscs = new Oscillator[3];
-    private final WaveViewer waveViewer= new WaveViewer(oscs);
+    private final WaveViewer waveViewer = new WaveViewer(oscs);
 
     private boolean shouldgenerate;
     private final AudioThread thread = new AudioThread(() -> {
@@ -73,7 +73,7 @@ public class Synth {
             frame.add(oscs[i]);
             y += 105;
         }
-        waveViewer.setBounds(290,0,620,310);
+        waveViewer.setBounds(290, 0, 620, 310);
         frame.add(waveViewer);
 
         frame.addKeyListener(keyAdapter);
@@ -86,15 +86,15 @@ public class Synth {
         frame.repaint();
     }
 
-    public void show(){
+    public void show() {
         frame.setVisible(true);
     }
 
-    static{
+    static {
         final int STARTING_KEY = 16;
-        final int KEYFREQ_INCREMENT=2;
+        final int KEYFREQ_INCREMENT = 2;
         final char[] KEYS = "zxcvbnm,./asdfghjkl;'qwertyuiop[]".toCharArray();
-        for(int i = STARTING_KEY, key=0;i<KEYS.length * KEYFREQ_INCREMENT + STARTING_KEY; i+=KEYFREQ_INCREMENT, ++key){
+        for (int i = STARTING_KEY, key = 0; i < KEYS.length * KEYFREQ_INCREMENT + STARTING_KEY; i += KEYFREQ_INCREMENT, ++key) {
             KEY_FREQS.put(KEYS[key], Util.Math.getKeyFrequency(i));
         }
     }
@@ -102,9 +102,12 @@ public class Synth {
     private final KeyAdapter keyAdapter = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
-            if(!KEY_FREQS.containsKey(e.getKeyChar())){return;}
+            if (!KEY_FREQS.containsKey(e.getKeyChar())) {
+                return;
+            }
+
             if (!thread.isRunning()) {
-                for(Oscillator o : oscs){
+                for (Oscillator o : oscs) {
                     o.setKeyFrequency(KEY_FREQS.get(e.getKeyChar()));
                 }
                 shouldgenerate = true;
@@ -122,7 +125,16 @@ public class Synth {
         return keyAdapter;
     }
 
-    public void updateWaveViewer(){
+    public void updateWaveViewer() {
         waveViewer.repaint();
+    }
+
+    public void UpdateParameters(Oscillator[] oscs) {
+        for (int i = 0; i < this.oscs.length; i++) {
+            this.oscs[i].Update(oscs[i]);
+        }
+    }
+    public Oscillator[] getOscs(){
+        return oscs;
     }
 }

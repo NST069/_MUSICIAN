@@ -57,7 +57,7 @@ public class Oscillator extends SynthControlContainer {
         TODO: Invert Osc, Noise, OpenSoundFile, Phase Randomness(?), Osc3 to Amplitude Modulation(?)
         TODO: Knobs
         */
-        JLabel toneParameter = new JLabel("x0.00");
+        /*JLabel toneParameter = new JLabel("x0.00");
         toneParameter.setBounds(165,65,50,25);
         toneParameter.setBorder(Util.WndDesigner.LINE_BORDER);
         Util.ParameterHandling.AddParameterMouseListeners(toneParameter, this,
@@ -68,6 +68,12 @@ public class Oscillator extends SynthControlContainer {
                     synth.updateWaveViewer();
                 });
         add(toneParameter);
+        */
+        JKnob jTP = new JKnob();
+        jTP.setBounds(170,50,40,40);
+        jTP.setStopper(5*Math.PI/6);
+        add(jTP);
+
 
         JLabel toneText=new JLabel("Tone: ");
         toneText.setBounds(172,40,75,25);
@@ -113,5 +119,12 @@ public class Oscillator extends SynthControlContainer {
         }
 
         return samples;
+    }
+
+    public void Update(Oscillator o){
+        setKeyFrequency(o.keyFrequency);
+        toneOffset = o.toneOffset;
+        volume=o.volume;
+        wavetable=o.wavetable;
     }
 }
