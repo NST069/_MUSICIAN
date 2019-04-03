@@ -1,6 +1,8 @@
 package EZWEBMER.FFMPEG;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,13 +17,13 @@ public class ffmpeg_test extends JFrame {
     File fImg;
     JButton OpenAud;
     File fAud;
-    JFileChooser jfc = new JFileChooser(new File(System.getProperty("user.home")+"\\Desktop\\"));
+    JFileChooser jfc = new JFileChooser(new File(System.getProperty("user.home") + "\\Desktop\\"));
     JTextField filename;
     JButton Convert;
 
     Jffmpeg jffmpeg;
 
-    public ffmpeg_test(){
+    public ffmpeg_test() {
         setMinimumSize(new Dimension(400, 150));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -30,9 +32,8 @@ public class ffmpeg_test extends JFrame {
         jffmpeg = new Jffmpeg();
 
 
-
         OpenImg = new JButton("Open Image");
-        OpenImg.setBounds(5,5,185,25);
+        OpenImg.setBounds(5, 5, 185, 25);
         OpenImg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -41,7 +42,7 @@ public class ffmpeg_test extends JFrame {
         });
         add(OpenImg);
         OpenAud = new JButton("Open Audio");
-        OpenAud.setBounds(195,5,185,25);
+        OpenAud.setBounds(195, 5, 185, 25);
         OpenAud.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,14 +51,14 @@ public class ffmpeg_test extends JFrame {
         });
         add(OpenAud);
         filename = new JTextField();
-        filename.setBounds(5,35,375,25);
+        filename.setBounds(5, 35, 375, 25);
         add(filename);
         Convert = new JButton("Convert");
-        Convert.setBounds(5,65,375,25);
+        Convert.setBounds(5, 65, 375, 25);
         Convert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("\n\n"+fImg.getAbsolutePath()+"\n"+fAud.getAbsolutePath()+"\n"+filename.getText());
+                System.out.println("\n\n" + fImg.getAbsolutePath() + "\n" + fAud.getAbsolutePath() + "\n" + filename.getText());
                 jffmpeg.MakeMp4(fImg, fAud, filename.getText());
             }
         });
@@ -71,21 +72,27 @@ public class ffmpeg_test extends JFrame {
         app.pack();
 
 
-
     }
 
-    private void openfileTo(boolean isPic){
-        int ret = jfc.showOpenDialog(this);
-        if(ret == JFileChooser.APPROVE_OPTION) {
-            if(isPic) {
+    private void openfileTo(boolean isPic) {
+        FileFilter ft;
+        if (isPic) {
+            ft = new FileNameExtensionFilter("Images", "png", "jpg");
+            jfc.setFileFilter(ft);
+            int ret = jfc.showOpenDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
                 fImg = jfc.getSelectedFile();
                 System.out.println(fImg.getAbsolutePath());
-            }
-            else{
+            } else System.out.println("err");
+        } else {
+            ft = new FileNameExtensionFilter("Music", "mp3", "wav");
+            jfc.setFileFilter(ft);
+            int ret = jfc.showOpenDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
                 fAud = jfc.getSelectedFile();
                 System.out.println(fAud.getAbsolutePath());
-            }
+            } else System.out.println("err");
+
         }
-        else System.out.println("err");
     }
 }

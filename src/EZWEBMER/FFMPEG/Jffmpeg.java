@@ -31,7 +31,8 @@ public class Jffmpeg {
                     ".\\out\\production\\_MUSICIAN\\EZWEBMER\\FFMPEG\\ffmpeg -loop 1 -r 1 "+
                     " -i \""+ img.getAbsolutePath()+
                     "\" -i \""+music.getAbsolutePath()+
-                    "\" -b:v 0 -crf 2 -b:a 160k -shortest -g 9999 -pix_fmt yuv420p -speed 0 -deadline 0 -threads 4 \""+
+                    "\" -b:v 0 -crf 2 -b:a 160k -shortest -g 9999 -pix_fmt yuv420p -speed 0 -deadline 0 -threads 4 " +
+                    "-t 0:1:00.0 \""+
                     music.getParent()+"\\"+name + ".mp4\"\"");
             System.out.println("Started Baking MP4");
             //Process process = Runtime.getRuntime().exec("cmd /K Start");
